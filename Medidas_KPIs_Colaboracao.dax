@@ -1,0 +1,139 @@
+/* ===============================================================
+PROJETO: Monitoramento de Produtividade & Prazos Jurídicos
+ARQUIVO: Medidas_Produtividade.dax
+AUTOR: [Seu Nome]
+DESCRIÇÃO: Fórmulas DAX para cálculo de KPIs de eficiência, 
+           SLA e volumetria operacional.
+===============================================================
+*/
+
+/* -----------------------------------------------------------
+   1. MÉTRICAS DE VOLUMETRIA (CONTAGEM)
+   ----------------------------------------------------------- */
+
+-- Contagem total de demandas na base
+Total Prazos = 
+COUNTROWS('Controle_Prazos')
+
+-- Prazos que já foram finalizados
+Prazos Concluídos = 
+CALCULATE(
+    [Total Prazos],
+    'Controle_Prazos'[Situação] = "Concluído"
+)
+
+-- Prazos que ainda estão em aberto (Backlog ativo)
+Prazos Ativos = 
+CALCULATE(
+    [Total Prazos],
+    'Controle_Prazos'[Situação] <> "Concluído"
+)
+
+-- Novas demandas que ainda não foram iniciadas
+Prazos Caixa de Entrada = 
+CALCULATE(
+    [Total Prazos],
+    'Controle_Prazos'[Situação] = "Caixa de Entrada"
+)
+
+-- Demandas que estão sendo trabalhadas no momento
+Prazos em Andamento = 
+CALCULATE(
+    [Total Prazos],
+    'Controle_Prazos'[Situação] = "Em Andamento"
+)
+
+
+/* -----------------------------------------------------------
+   2. MÉTRICAS DE RISCO E SLA (PRAZOS)
+   ----------------------------------------------------------- */
+
+-- Prazos que já expiraram e ainda não foram concluídos
+Prazos Vencidos = 
+CALCULATE(
+    [Total Prazos],
+    'Controle_Prazos'[Prazo] < TODAY(),
+    'Controle_Prazos'[Situação] <> "Concluído"
+)
+
+-- Alerta de prioridade: Vencem hoje
+Prazos Vencendo Hoje = 
+CALCULATE(
+    [Total Prazos],
+    'Controle_Prazos'[Prazo] = TODAY(),
+    'Controle_Prazos'[Situação] <> "Concluído"
+)
+
+-- Radar de curto prazo: Vencem na próxima semana
+Prazos Vencendo Próximos 7 Dias = 
+CALCULATE(
+    [Total Prazos],
+    'Controle_Prazos'[Prazo] >= TODAY(),
+    'Controle_Prazos'[Prazo] <= TODAY() + 7,
+    'Controle_Prazos'[Situação] <> "Concluído"
+)
+
+-- KPI de Qualidade: Percentual de entregas dentro do prazo estipulado
+% Cumprimento Prazo = 
+DIVIDE(
+    [Prazos Concluídos no Prazo], 
+    [Prazos Concluídos],
+    0
+)
+
+
+/* -----------------------------------------------------------
+   3. MÉTRICAS DE EFICIÊNCIA E TEMPO (LEAD TIME)
+   Lógica: Utiliza DATEDIFF para calcular a diferença em dias
+   entre os timestamps capturados pelo Power Automate.
+   ----------------------------------------------------------- */
+
+-- Tempo médio de execução (Lead Time de Produção)
+-- Diferença entre "Início da Execução" e "Conclusão"
+Tempo Médio Execução (Dias) = 
+AVERAGEX(
+    FILTER(
+        'Controle_Prazos', 
+        'Controle_Prazos'[Situação] = "Concluído" && 
+        NOT ISBLANK('Controle_Prazos'[Data Início Andamento]) &&
+        NOT ISBLANK('Controle_Prazos'[Data Conclusão])
+    ),
+    DATEDIFF(
+        'Controle_Prazos'[Data Início Andamento], 
+        'Controle_Prazos'[Data Conclusão], 
+        DAY
+    )
+)
+
+-- Tempo médio de resposta (Agilidade no atendimento)
+-- Diferença entre "Criação da Demanda" e "Início da Execução"
+Tempo Médio Resposta (Dias) = 
+AVERAGEX(
+    FILTER(
+        'Controle_Prazos', 
+        NOT ISBLANK('Controle_Prazos'[Data Criação]) &&
+        NOT ISBLANK('Controle_Prazos'[Data Início Andamento])
+    ),
+    DATEDIFF(
+        'Controle_Prazos'[Data Criação], 
+        'Controle_Prazos'[Data Início Andamento], 
+        DAY
+    )
+)
+
+-- Lead Time Total (Visão do Cliente)
+-- Diferença entre "Criação" e "Conclusão"
+Tempo Médio Conclusão Total (Dias) = 
+AVERAGEX(
+    FILTER(
+        'Controle_Prazos', 
+        'Controle_Prazos'[Situação] = "Concluído" &&
+        NOT ISBLANK('Controle_Prazos'[Data Criação]) &&
+        NOT ISBLANK('Controle_Prazos'[Data Conclusão])
+    ),
+    DATEDIFF(
+        'Controle_Prazos'[Data Criação], 
+        'Controle_Prazos'[Data Conclusão], 
+        DAY
+    )
+)
