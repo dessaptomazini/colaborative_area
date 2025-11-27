@@ -4,42 +4,56 @@
 ![Microsoft Lists](https://img.shields.io/badge/Microsoft_Lists-57A4FF?style=for-the-badge&logo=microsoft-lists&logoColor=white)
 ![SharePoint](https://img.shields.io/badge/SharePoint-0078D4?style=for-the-badge&logo=microsoft-sharepoint&logoColor=white)
 
-💡 Projeto Área Colaborativa: Gestão de Inovação & Melhoria Contínua
+💡 Collaborative Hub Project: Innovation Management & Continuous Improvement
 
-📌 Visão Geral
+📌 Overview
 
-Este projeto nasceu da necessidade de centralizar, gerenciar e metrificar as ideias de melhoria propostas pelos colaboradores. Foi criada uma plataforma de Inovação Aberta Interna integrada ao ecossistema Microsoft 365, onde sugestões são capturadas, votadas, priorizadas e implementadas com total transparência.
+This project emerged from the need to centralize, manage, and measure improvement ideas proposed by employees. I designed an Internal Open Innovation Platform integrated within the Microsoft 365 ecosystem, where suggestions are captured, voted on, prioritized, and implemented with total transparency.
 
-🎯 O Problema
+🎯 The Problem
 
-Boas ideias se perdiam em e-mails ou conversas informais.
-Falta de feedback para quem sugeria melhorias, gerando desengajamento.
-Dificuldade em medir o impacto da inovação na empresa.
+Information Silos: Valuable ideas were often lost in emails or informal conversations.
 
-🛠️ A Solução: Gamificação e Gestão Visual
+Disengagement: Lack of feedback loops for those suggesting improvements caused team disengagement.
 
-1. Coleta e Engajamento (Microsoft Lists)
-Interface amigável para cadastro de sugestões.
-Sistema de "Votos" (Likes) para que a própria equipe priorize as ideias mais relevantes.
+Unmeasured Impact: Difficulty in measuring the actual ROI (Return on Investment) of innovation within the company.
 
-2. Inteligência e Gestão (Power BI)
-O dashboard atua como o "Placar do Jogo", monitorando todo o ciclo de vida de uma ideia, do brainstorming à implementação.
+🛠️ The Solution: Gamification & Visual Management
 
-Métricas DAX Desenvolvidas:
+1. Collection & Engagement (Microsoft Lists)
 
-Funil de Inovação: Monitoramento do status das ideias (Sugestões no Backlog -> Em Análise -> Em Andamento -> Implementadas).
-KPIs de Engajamento: Total de Sugestões por área e Média de Votos por Sugestão para identificar temas de alto interesse.
-SLA de Inovação: Medição precisa do tempo que a empresa leva para transformar uma ideia em realidade:
-Tempo no Backlog: Espera para análise.
-Tempo em Análise: Avaliação de viabilidade.
-Tempo de Implementação: Execução técnica.
-Jornada da Implementação (Lead Time): Tempo total ponta a ponta.
+Created a user-friendly interface for submitting suggestions.
 
-3. Engenharia de Dados
-Tratamento de dados do SharePoint para normalizar datas e status.
-Lógica COALESCE no DAX para garantir que métricas de tempo não quebrem quando há etapas vazias ou em andamento.
+Implemented a "Crowd-Voting" System (Likes), empowering the team to prioritize the most relevant ideas themselves.
 
-🚀 Resultados e Impacto
-Cultura de Inovação: A visibilidade do painel (quem sugeriu, quem curtiu) estimulou a competição saudável e o envio de novas ideias.
-Transparência: Colaboradores conseguem ver exatamente em que etapa está sua sugestão, eliminando a frustração da "caixa de sugestões esquecida".
-Melhoria de Processos: As sugestões implementadas (monitoradas pelo painel) resultaram em otimizações diretas nos fluxos de trabalho da empresa.
+2. Intelligence & Governance (Power BI) The dashboard acts as the "Innovation Scoreboard", monitoring the entire lifecycle of an idea, from brainstorming to deployment.
+
+3. Advanced DAX Metrics:
+
+Innovation Funnel: Status monitoring (Backlog -> Under Analysis -> In Progress -> Implemented).
+
+Engagement KPIs: Total Suggestions by Department and Average Votes per Suggestion to identify high-interest topics.
+
+Innovation SLA (Service Level Agreement): Precise measurement of the time the company takes to turn an idea into reality:
+
+Backlog Duration: Waiting time before analysis.
+
+Analysis Lead Time: Feasibility assessment duration.
+
+Implementation Cycle Time: Technical execution.
+
+End-to-End Journey: Total Lead Time.
+
+4. Data Engineering:
+
+SharePoint data treatment to normalize dates and statuses.
+
+Application of COALESCE Logic in DAX to handle null values, ensuring time metrics don't break when stages are empty or still in progress.
+
+🚀 Results & Impact
+
+Innovation Culture: The dashboard's visibility (showing who suggested and who voted) stimulated healthy competition and a surge in new ideas.
+
+Radical Transparency: Employees can track exactly where their suggestion sits in the pipeline, eliminating the frustration of the "forgotten suggestion box."
+
+Process Improvement: The implemented suggestions (tracked by the dashboard) resulted in direct optimizations of the company's workflows.
